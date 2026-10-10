@@ -3,7 +3,7 @@
 An intelligent, secure banking platform developed as an academic college project by MLRIT students.
 
 ## Developed by MLRIT Students
-- **Z.R. Vamshi Krishna** (Roll: 25R21A67B5) — `25r21a67b5@mlrit.ac.in`
+- **Vamshi Krishna** (Roll: 25R21A67B5) — `25r21a67b5@mlrit.ac.in`
 - **Abhiram** (Roll: 25R21A67A0) — `25r21a67A0@mlrit.ac.in`
 - **Priyanshu** (Roll: 25R21A6779) — `25r21a6779@mlrit.ac.in`
 

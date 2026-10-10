@@ -12,7 +12,7 @@ USE smart_banking_db;
 -- (Passwords are BCrypt hashed for production, or demo strings)
 INSERT INTO users (id, name, email, phone, password, role) VALUES
 (1, 'Vamshi Krishna', '25r21a67b5@mlrit.ac.in', '+91 9876543210', '$2a$10$e7K9h90M.x25qWdF9f2Qle99HkZ.sM3XQ2W1/4jD/Xz7V5B8uU0yO', 'USER'),
-(2, 'Abhiram (Admin)', '25r21a67A0@mlrit.ac.in', '+91 9876543211', '$2a$10$e7K9h90M.x25qWdF9f2Qle99HkZ.sM3XQ2W1/4jD/Xz7V5B8uU0yO', 'ADMIN');
+(2, 'System Administrator', 'admin.supervisor@smartbanking.org', '+91 9876543200', '$2a$10$e7K9h90M.x25qWdF9f2Qle99HkZ.sM3XQ2W1/4jD/Xz7V5B8uU0yO', 'ADMIN');
 
 -- 2. SEED ACCOUNTS FOR VAMSHI KRISHNA
 INSERT INTO accounts (id, user_id, account_number, account_type, balance, status) VALUES

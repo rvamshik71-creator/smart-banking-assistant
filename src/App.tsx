@@ -790,7 +790,7 @@ export default function App() {
                 required
                 value={regName}
                 onChange={(e) => setRegName(e.target.value)}
-                placeholder="e.g. Z.R. Vamshi Krishna"
+                placeholder="e.g. Vamshi Krishna"
                 className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500"
               />
             </div>
@@ -869,7 +869,7 @@ export default function App() {
         </div>
 
         <footer className="text-center py-4 text-[11px] text-slate-500">
-          Developed by MLRIT Students: Z.R. Vamshi Krishna, Abhiram, Priyanshu
+          Developed by MLRIT Students: Vamshi Krishna, Abhiram, Priyanshu
         </footer>
       </div>
     );
@@ -2471,7 +2471,7 @@ export default function App() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-black/5">
             <div className="p-4 rounded-2xl bg-white/80 border border-slate-200/80 text-xs">
-              <strong className="text-sm text-[#020C21] block">Z.R. Vamshi Krishna</strong>
+              <strong className="text-sm text-[#020C21] block">Vamshi Krishna</strong>
               <span className="text-[#4A78B0] font-mono text-[11px] block mt-0.5">Roll No: 25R21A67B5</span>
               <a href="mailto:25r21a67b5@mlrit.ac.in" className="text-slate-600 hover:text-black mt-2 block font-mono text-[11px]">
                 25r21a67b5@mlrit.ac.in

@@ -2,7 +2,7 @@
 -- SMART BANKING ASSISTANT (Powered by BANKO)
 -- Database: MySQL
 -- Developed by MLRIT Students:
---   - Z.R. Vamshi Krishna (25R21A67B5)
+--   - Vamshi Krishna (25R21A67B5)
 --   - Abhiram (25R21A67A0)
 --   - Priyanshu (25R21A6779)
 -- =====================================================================
