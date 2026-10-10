@@ -3,8 +3,12 @@ import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
@@ -24,19 +28,26 @@ if (apiKey) {
 }
 
 // System prompt defining the persona and function-execution guidance
-const SYSTEM_INSTRUCTION = `You are ConSentinel's autonomous Smart Banking Assistant.
-You specialize in conversational treasury management, liquidity optimization, fraud detection, and multi-account banking.
+const SYSTEM_INSTRUCTION = `You are BANKO — Your Smart Banking Assistant.
+You are an intelligent banking assistant developed as part of the Smart Banking Assistant project by MLRIT students (Z.R. Vamshi Krishna, Abhiram, Priyanshu).
 
-Your user is Alex Rivera, founder and treasury manager with:
-- Operating Checking: $24,850.00
-- High-Yield Vault (5.20% APY): $185,200.00
-- Treasury Reserve: $450,000.00
+You help users manage accounts, monitor balances, analyze spending, plan monthly budgets, track savings goals, and calculate loan EMIs.
+
+User details:
+- Name: Vamshi Krishna (Email: 25r21a67b5@mlrit.ac.in)
+- Savings Account (•••• 4192): ₹45,250.00
+- Current Account (•••• 8821): ₹1,20,000.00
+- Monthly Income: ₹45,000.00 (Salary credited)
+- Total Monthly Spending: ₹18,450.00
+- Highest Spending Category: Food (₹6,200.00)
+- Active Savings Goal: Emergency Fund (₹32,500 saved of ₹50,000 target - 65%)
 
 When responding:
-1. Provide concise, clear, and highly competent financial intelligence (2-4 sentences or structured bullets).
-2. If the user asks to transfer, sweep, freeze, or adjust limits, confirm the action clearly and specify the exact parameters.
-3. Be professional, reassuring, and data-driven with exact dollar amounts and percentages.
-4. If an anomaly is mentioned, detail the safety measures taken.`;
+1. Greet courteously and introduce yourself as BANKO if asked.
+2. Provide direct, helpful answers with concrete rupee (₹) figures based on user data.
+3. If asked about spending, explain categories clearly (Food ₹6,200, Shopping ₹4,800, Bills ₹3,500, Transport ₹2,100, Other ₹1,850).
+4. If asked to calculate EMI, provide the monthly formula and exact EMI breakdown.
+5. Keep responses concise, structured, and easy to read (2-4 sentences or short bullet points).`;
 
 // API endpoint for Smart Banking Assistant
 app.post('/api/assistant', async (req, res) => {
@@ -59,7 +70,7 @@ app.post('/api/assistant', async (req, res) => {
           },
         });
 
-        const reply = response.text || "I've analyzed your treasury request and confirmed your balances remain protected.";
+        const reply = response.text || "Hi! I'm BANKO. I've reviewed your accounts. Your total balance is ₹1,65,250 across Savings and Current accounts.";
         res.json({ reply, source: 'gemini' });
         return;
       } catch (err: any) {
@@ -69,18 +80,24 @@ app.post('/api/assistant', async (req, res) => {
 
     // Heuristic fallback engine if API key is unconfigured or rate limited
     const lower = prompt.toLowerCase();
-    let fallbackReply = "I have scanned your financial accounts. All balances are verified safe and synchronized with our 5.20% APY depository network.";
+    let fallbackReply = "Hi! I'm BANKO. How can I help you with your banking today? You can ask about your balance, spending, budgets, savings goals, or loan EMI.";
 
-    if (lower.includes('audit') || lower.includes('fraud') || lower.includes('suspicious')) {
-      fallbackReply = "Ledger scan complete. I flagged 1 suspect charge attempt ($2,850.00 Berlin merchant draft) outside your primary geographic profile and applied an autonomous freeze. All other transactions are verified safe.";
-    } else if (lower.includes('forecast') || lower.includes('future') || lower.includes('bills')) {
-      fallbackReply = "Based on upcoming recurring drafts and expected receivables, your estimated cash balance will bottom out at $19,420.00 on Nov 14th before your next invoice settlement. Your minimum liquidity buffer remains at +31%.";
-    } else if (lower.includes('sweep') || lower.includes('transfer') || lower.includes('vault')) {
-      fallbackReply = "Autonomous sweep executed. $500.00 transferred from Operating Checking to your High-Yield Vault earning 5.20% APY. Your updated vault balance is $185,700.00.";
-    } else if (lower.includes('spend') || lower.includes('breakdown') || lower.includes('expense')) {
-      fallbackReply = "Your current monthly breakdown: Operational & Cloud Services at 55% ($13,660.00), High-Yield Reserves at 30% ($7,450.00), and Discretionary at 15% ($3,720.00). Overall burn is down 8.4% from last month.";
-    } else if (lower.includes('freeze') || lower.includes('card') || lower.includes('lock')) {
-      fallbackReply = "Emergency killswitch toggled. Card ending in ••8201 has been frozen across all payment networks. No further merchant transactions will be authorized until you unlock it.";
+    if (lower.includes('balance') || lower.includes('how much') && lower.includes('have')) {
+      fallbackReply = "Your total available balance is ₹1,65,250.00 (Savings Account: ₹45,250.00, Current Account: ₹1,20,000.00).";
+    } else if (lower.includes('spend') || lower.includes('spent') || lower.includes('expense')) {
+      fallbackReply = "You spent ₹18,450.00 this month. Your highest spending category is Food (₹6,200.00), followed by Shopping (₹4,800.00) and Utility Bills (₹3,500.00).";
+    } else if (lower.includes('category') || lower.includes('most')) {
+      fallbackReply = "Your highest spending category this month is Food at ₹6,200.00 (33.6% of your total expenses).";
+    } else if (lower.includes('saving') || lower.includes('goal')) {
+      fallbackReply = "Your Emergency Fund goal has ₹32,500.00 saved toward the ₹50,000.00 target (65% completed). You need ₹17,500.00 more to reach your goal.";
+    } else if (lower.includes('transaction') || lower.includes('recent')) {
+      fallbackReply = "Your recent transactions include: Salary (+₹45,000.00), Grocery Supermarket (-₹2,500.00), Electricity Bill (-₹1,500.00), and Shopping (-₹3,200.00).";
+    } else if (lower.includes('emi') || lower.includes('loan')) {
+      fallbackReply = "For an example personal loan of ₹1,00,000 at 10.5% interest for 2 years (24 months), your monthly EMI is approximately ₹4,638.00. Total interest payable will be ₹11,312.00.";
+    } else if (lower.includes('budget')) {
+      fallbackReply = "Your monthly Food budget is ₹6,000.00 with ₹4,200.00 spent and ₹1,800.00 remaining. You are at 70% of your allocated budget.";
+    } else if (lower.includes('transfer') || lower.includes('send')) {
+      fallbackReply = "You can initiate a money transfer from the 'Money Transfer' tab. Enter the receiver account number and amount to validate and process.";
     }
 
     res.json({ reply: fallbackReply, source: 'fallback' });
